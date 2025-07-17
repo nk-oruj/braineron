@@ -1,5 +1,6 @@
 MODULE errors;
-IMPORT Strings, Out, VT100;
+IMPORT
+    Strings, Out, VT100;
 
 TYPE
     ErrorDesc = RECORD
@@ -7,8 +8,8 @@ TYPE
     END;
     Error* = POINTER TO ErrorDesc;
 
-
-PROCEDURE Pipe*(error : Error; label, message : ARRAY OF CHAR) : Error;
+(** errors.Pipe(error, "label", "description") : pipedError -- pipes up error through the call frames giving description from each frame **)
+PROCEDURE Pipe*(error : Error; label, description : ARRAY OF CHAR) : Error;
 VAR
     newError    : Error;
     escape      : ARRAY 9 OF CHAR;
@@ -33,8 +34,8 @@ BEGIN
     Strings.Append(VT100.ResetAll, escape);
     Strings.Append(escape, newError.raise);
 
-    (* append error message *)
-    Strings.Append(message, newError.raise);
+    (* append error description *)
+    Strings.Append(description, newError.raise);
     
     (* apeend line feed (handle platforms?) *)
     length := Strings.Length(newError.raise);
@@ -42,8 +43,8 @@ BEGIN
     newError.raise[length + 1] := 0X;
 
     (* if piping up a specified error *)
-    (* append previous error messages after *)
-    (* to list messages in descending order *)
+    (* append previous error descriptions after *)
+    (* to list descriptions in descending order *)
     IF error # NIL
     THEN
         Strings.Append(error.raise, newError.raise);
@@ -53,6 +54,7 @@ BEGIN
     RETURN newError;
 END Pipe;
 
+(** errors.Raise(error, "label") -- raises the piped error onto terminal with the given raise label **)
 PROCEDURE Raise*(error : Error; label : ARRAY OF CHAR);
 VAR
     escape : ARRAY 9 OF CHAR;
@@ -88,7 +90,7 @@ BEGIN
         Strings.Append(VT100.ResetAll, escape);
         Out.String(escape);
         
-        (* print the piped messages *)
+        (* print the piped descriptions *)
         Out.String(error.raise);
 
         (* print a padding line feed *)
