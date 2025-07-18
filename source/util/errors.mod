@@ -15,6 +15,7 @@ VAR
     newLength   : INTEGER;
     escape      : ARRAY 9 OF CHAR;
 BEGIN
+
     (* allocate new error *)
     NEW(newError);
     newError.raise[0] := 0X;
@@ -43,32 +44,33 @@ BEGIN
     newError.raise[newLength + 1] := 0X;
 
     (* if piping up a specified error *)
-    (* append previous error descriptions after *)
-    (* to list descriptions in descending order *)
     IF error # NIL
     THEN
+        (* append previous error descriptions afterwards (desc ord) *)
         Strings.Append(error.raise, newError.raise);
     END;
 
     (* return new error *)
     RETURN newError;
+
 END Pipe;
 
 PROCEDURE Raise*(error : Error; label : ARRAY OF CHAR);
 VAR
     escape : ARRAY 9 OF CHAR;
 BEGIN
+
     (* if raise is called without any error *)
     IF error = NIL
     THEN
-        (* print raise misuse message *)
+        (* print raise misuse *)
         Out.String(label);
         Out.String(": invalid raising");
         Out.Ln;
-        
+
         RETURN;
     END;
-    
+     
     (* if raise is called for a valid error *)
 
     (* print a padding line feed *)
@@ -98,6 +100,7 @@ BEGIN
 
     (* print a padding line feed *)
     Out.Ln;
+
 END Raise;
 
 END errors.

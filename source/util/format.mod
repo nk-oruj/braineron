@@ -2,12 +2,14 @@ MODULE format;
 
 PROCEDURE Clear*(VAR destination : ARRAY OF CHAR);
 BEGIN
+
     (* if destination has capacity *)
     IF LEN(destination) > 0
     THEN
         (* set first char null *)
         destination[0] := 0X;
     END;
+
 END Clear;
 
 PROCEDURE Length*(VAR destination : ARRAY OF CHAR) : INTEGER;
@@ -16,6 +18,7 @@ VAR
     max         : INTEGER;
     index       : INTEGER;
 BEGIN
+
     capacity    := LEN(destination);
     max         := MAX(INTEGER);
 
@@ -28,6 +31,7 @@ BEGIN
 
     (* return iterated index as length *)
     RETURN index;
+
 END Length;
 
 (*  *)
@@ -39,6 +43,7 @@ VAR
     lengthB     : INTEGER;
     index       : INTEGER;
 BEGIN
+
     capacity    := LEN(destination);
     lengthA     := Length(destination);
     lengthB     := Length(str);
@@ -60,12 +65,14 @@ BEGIN
         (* if appending index past destination capacity, set capacity-end char null *)
         destination[capacity - 1] := 0X;
     END;
+
 END AppendStr;
 
 PROCEDURE AppendChr*(VAR destination : ARRAY OF CHAR; chr : CHAR);
 VAR
     lengthA : INTEGER;
 BEGIN
+
     lengthA := Length(destination);
 
     (* if destination length is not filling whole destination capacity *)
@@ -76,14 +83,21 @@ BEGIN
         (* append null char *)
         destination[lengthA + 1] := 0X;
     END;
+
 END AppendChr;
 
 PROCEDURE AppendInt*(VAR destination : ARRAY OF CHAR; int : INTEGER);
 BEGIN
+
+    (*  *)
+
 END AppendInt;
 
 PROCEDURE AppendFlt*(VAR destination : ARRAY OF CHAR; flt : REAL);
 BEGIN
+
+    (*  *)
+
 END AppendFlt;
 
 END format.
