@@ -12,8 +12,8 @@ TYPE
 PROCEDURE Pipe*(error : Error; label, description : ARRAY OF CHAR) : Error;
 VAR
     newError    : Error;
+    newLength   : INTEGER;
     escape      : ARRAY 9 OF CHAR;
-    length      : INTEGER;
 BEGIN
     (* allocate new error *)
     NEW(newError);
@@ -37,10 +37,10 @@ BEGIN
     (* append error description *)
     Strings.Append(description, newError.raise);
     
-    (* apeend line feed (handle platforms?) *)
-    length := Strings.Length(newError.raise);
-    newError.raise[length] := CHR(10);
-    newError.raise[length + 1] := 0X;
+    (* append line feed (handle platforms?) *)
+    newLength := Strings.Length(newError.raise);
+    newError.raise[newLength] := CHR(10);
+    newError.raise[newLength + 1] := 0X;
 
     (* if piping up a specified error *)
     (* append previous error descriptions after *)
