@@ -58,43 +58,46 @@ PROCEDURE Raise*(error : Error; label : ARRAY OF CHAR);
 VAR
     escape : ARRAY 9 OF CHAR;
 BEGIN
+    (* if raise is called without any error *)
     IF error = NIL
     THEN
-        (* if raise is called without any error, then it's raise misuse *)
+        (* print raise misuse message *)
         Out.String(label);
         Out.String(": invalid raising");
         Out.Ln;
-    ELSE
-        (* if raise is called for a valid error *)
-
-        (* print a padding line feed *)
-        Out.Ln;
         
-        (* print escape seq for red *)
-        COPY(VT100.CSI, escape);
-        Strings.Append(VT100.Red, escape);
-        Out.String(escape);
-
-        (* print escape seq for underline *)
-        COPY(VT100.CSI, escape);
-        Strings.Append(VT100.Underlined, escape);
-        Out.String(escape);
-
-        (* print label of raise *)
-        Out.String(label);
-        Out.Ln;  
-
-        (* print escape seq for reset *)
-        COPY(VT100.CSI, escape);
-        Strings.Append(VT100.ResetAll, escape);
-        Out.String(escape);
-        
-        (* print the piped descriptions *)
-        Out.String(error.raise);
-
-        (* print a padding line feed *)
-        Out.Ln;
+        RETURN;
     END;
+    
+    (* if raise is called for a valid error *)
+
+    (* print a padding line feed *)
+    Out.Ln;
+    
+    (* print escape seq for red *)
+    COPY(VT100.CSI, escape);
+    Strings.Append(VT100.Red, escape);
+    Out.String(escape);
+
+    (* print escape seq for underline *)
+    COPY(VT100.CSI, escape);
+    Strings.Append(VT100.Underlined, escape);
+    Out.String(escape);
+
+    (* print label of raise *)
+    Out.String(label);
+    Out.Ln;  
+
+    (* print escape seq for reset *)
+    COPY(VT100.CSI, escape);
+    Strings.Append(VT100.ResetAll, escape);
+    Out.String(escape);
+    
+    (* print the piped descriptions *)
+    Out.String(error.raise);
+
+    (* print a padding line feed *)
+    Out.Ln;
 END Raise;
 
 END errors.
