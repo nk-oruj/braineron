@@ -3,11 +3,16 @@ MODULE errors;
 IMPORT
     Strings, Out, VT100;
 
+(*  *)
+
 TYPE
     ErrorDesc = RECORD
         raise : ARRAY 1024 OF CHAR;
     END;
+    
     Error* = POINTER TO ErrorDesc;
+
+(*  *)
 
 PROCEDURE Pipe*(error : Error; label, description : ARRAY OF CHAR) : Error;
 VAR
@@ -102,5 +107,7 @@ BEGIN
     Out.Ln;
 
 END Raise;
+
+(*  *)
 
 END errors.
