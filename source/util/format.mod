@@ -2,8 +2,12 @@ MODULE format;
 
 PROCEDURE Clear*(VAR destination : ARRAY OF CHAR);
 BEGIN
-    (* if destination has capacity, then set first char null *)
-    IF LEN(destination) > 0 THEN destination[0] := 0X; END;
+    (* if destination has capacity *)
+    IF LEN(destination) > 0
+    THEN
+        (* set first char null *)
+        destination[0] := 0X;
+    END;
 END Clear;
 
 PROCEDURE Length*(VAR destination : ARRAY OF CHAR) : INTEGER;
