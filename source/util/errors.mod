@@ -1,4 +1,5 @@
 MODULE errors;
+
 IMPORT
     Strings, Out, VT100;
 
@@ -8,7 +9,6 @@ TYPE
     END;
     Error* = POINTER TO ErrorDesc;
 
-(** errors.Pipe(error, "label", "description") : pipedError -- pipes up error through the call frames giving description from each frame **)
 PROCEDURE Pipe*(error : Error; label, description : ARRAY OF CHAR) : Error;
 VAR
     newError    : Error;
@@ -54,7 +54,6 @@ BEGIN
     RETURN newError;
 END Pipe;
 
-(** errors.Raise(error, "label") -- raises the piped error onto terminal with the given raise label **)
 PROCEDURE Raise*(error : Error; label : ARRAY OF CHAR);
 VAR
     escape : ARRAY 9 OF CHAR;
