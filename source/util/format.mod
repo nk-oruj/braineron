@@ -68,7 +68,46 @@ BEGIN
 END AppendChr;
 
 PROCEDURE AppendInt*(VAR destination : ARRAY OF CHAR; int : INTEGER);
+VAR
+  index, digit, length  : INTEGER;
+  isNegative            : BOOLEAN;
+  temp                  : ARRAY 16 OF CHAR;
 BEGIN
+    (* check zero value *)
+    IF int = 0 THEN
+        destination[0] := "0";
+        destination[1] := 0X;
+        RETURN;
+    END;
+
+    (* check negative value *)
+    isNegative := FALSE;
+    IF int < 0 THEN
+        isNegative := TRUE;
+        int := -int;
+    END;
+
+    (* stack the digits *)
+    index := 0; WHILE int # 0
+    DO
+        digit := int MOD 10;
+        temp[index] := CHR(48 + digit);
+        index := index + 1;
+        int := int DIV 10;
+    END;
+
+    (* append minus if needed *)
+    IF isNegative
+    THEN
+        AppendChr(destination, "-");
+    END;
+
+    (* append stacked digits *)
+    WHILE index > 0
+    DO
+        index := index - 1;
+        AppendChr(destination, temp[index]);
+    END;
 END AppendInt;
 
 PROCEDURE AppendFlt*(VAR destination : ARRAY OF CHAR; flt : REAL);
