@@ -1,19 +1,24 @@
 # braineron
-brainfuck compiler on oberon compiling oberon
+brainfuck compiler written on oberon compiling oberon
 
-### deps
+## deps
 voc - https://github.com/vishapoberon/compiler
 
-### usage
+## usage
+
+#### compile braineron
 ```
 make build
 make delete
-...
-touch <source>
-vim <source>
-...
+```
+
+#### execute braineron
+```
 ./braineron <source> <target>
 voc <target> -m
-...
+```
+
+#### execute the program
+```
 ./main
 ```
