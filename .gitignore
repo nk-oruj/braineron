@@ -2,7 +2,6 @@
 *.h
 *.o
 *.sym
-*.bf
-main
-test
+examples/main
+examples/*.mod
 braineron
