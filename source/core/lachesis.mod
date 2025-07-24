@@ -10,8 +10,8 @@ IMPORT
 
 TYPE
     ContextDataDesc = RECORD
-        source, target      : Files.Rider;
-        symbol, loopOrder   : INTEGER;
+        source, target  : Files.Rider;
+        symbol, indent  : INTEGER;
     END;
     ContextData = POINTER TO ContextDataDesc;
 
@@ -77,7 +77,7 @@ BEGIN
         END;
     UNTIL break;
 
-    clotho.WriteIncrease(context.target, counter);
+    clotho.WriteIncrease(context.target, counter, context.indent);
 
     RETURN NIL;
 END RuleIncrease;
@@ -106,7 +106,7 @@ BEGIN
         END;
     UNTIL break;
 
-    clotho.WriteDecrease(context.target, counter);
+    clotho.WriteDecrease(context.target, counter, context.indent);
 
     RETURN NIL;
 END RuleDecrease;
@@ -135,7 +135,7 @@ BEGIN
         END;
     UNTIL break;
 
-    clotho.WriteMoveRight(context.target, counter);
+    clotho.WriteMoveRight(context.target, counter, context.indent);
 
     RETURN NIL;
 END RuleMoveRight;
@@ -164,7 +164,7 @@ BEGIN
         END;
     UNTIL break;
 
-    clotho.WriteMoveLeft(context.target, counter);
+    clotho.WriteMoveLeft(context.target, counter, context.indent);
 
     RETURN NIL;
 END RuleMoveLeft;
@@ -174,7 +174,6 @@ VAR
     error           : errors.Error;
     errorMessage    : ARRAY 128 OF CHAR;
 BEGIN
-    context.loopOrder := context.loopOrder + 1;
 
     error := Accept(atropos.fjump, context);
     IF error # NIL
@@ -184,7 +183,9 @@ BEGIN
         RETURN errors.Pipe(error, "syntax", errorMessage);
     END;
 
-    clotho.WriteJumpForward(context.target, context.loopOrder);
+    clotho.WriteJumpForward(context.target, context.indent);
+
+    context.indent := context.indent + 1;
 
     error := RuleContent(context);
     IF error # NIL
@@ -192,6 +193,8 @@ BEGIN
         (* direct piping *)
         RETURN error;
     END;
+
+    context.indent := context.indent - 1;
 
     error := Accept(atropos.bjump, context);
     IF error # NIL
@@ -201,9 +204,7 @@ BEGIN
         RETURN errors.Pipe(error, "syntax", errorMessage);
     END;
 
-    clotho.WriteJumpBackward(context.target, context.loopOrder);
-
-    context.loopOrder := context.loopOrder - 1;
+    clotho.WriteJumpBackward(context.target, context.indent);
 
     RETURN NIL;
 END RuleLoop;
@@ -253,7 +254,7 @@ BEGIN
                 (* direct piping *)
                 RETURN error;
             END;
-            clotho.WriteInput(context.target);
+            clotho.WriteInput(context.target, context.indent);
         ELSIF context.symbol = atropos.output
         THEN
             error := Accept(atropos.output, context);
@@ -262,7 +263,7 @@ BEGIN
                 (* direct piping *)
                 RETURN error;
             END;
-            clotho.WriteOutput(context.target);
+            clotho.WriteOutput(context.target, context.indent);
         ELSIF context.symbol = atropos.fjump
         THEN
             error := RuleLoop(context);
@@ -318,7 +319,7 @@ BEGIN
     NEW(context);
     context.source := source;
     context.target := target;
-    context.loopOrder := 0;
+    context.indent := 0;
     atropos.Scan(context.symbol, context.source);
 
     (* run parsing rules *)
