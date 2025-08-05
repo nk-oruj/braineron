@@ -1,5 +1,5 @@
 # braineron
-brainfuck compiler - written in oberon & writing out oberon
+brainfuck compiler - written in oberon and writing out oberon
 
 ## deps
 voc - https://github.com/vishapoberon/compiler
