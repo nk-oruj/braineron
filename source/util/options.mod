@@ -24,7 +24,7 @@ BEGIN
 
     IF Args.argc # 3
     THEN
-        RETURN errors.Pipe(NIL, "options", "error in usage: braineron <source> <target>");
+        RETURN errors.Pipe(NIL, "options", "error in usage: ./braineron <source> <target>");
     END;
 
     Args.Get(1, sourcePath);
