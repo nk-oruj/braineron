@@ -1,5 +1,5 @@
 # braineron
-brainfuck compiler written on oberon compiling oberon
+brainfuck compiler - written in oberon & writing out oberon
 
 ## deps
 voc - https://github.com/vishapoberon/compiler
@@ -8,13 +8,16 @@ voc - https://github.com/vishapoberon/compiler
 
 #### compile braineron
 ```
-make build
-make delete
+make build && make delete
 ```
 
 #### execute braineron
 ```
 ./braineron <source> <target>
+```
+
+#### compile the program
+```
 voc <target> -m
 ```
 
@@ -37,3 +40,5 @@ voc <target> -m
 |`]`|jump backward to `[` if pointed data is non-zero|
 |`#`|compiler-specific inline comment prefix|
 
+## refs
+https://esolangs.org/wiki/Brainfuck

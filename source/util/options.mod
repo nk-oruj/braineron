@@ -4,12 +4,16 @@ IMPORT
     Args, Files,
     errors, format;
 
+(*  *)
+
 TYPE
     SetupDataDesc = RECORD
         sourceFile, targetFile      : Files.File;
         sourceRider*, targetRider*  : Files.Rider;
     END;
     SetupData* = POINTER TO SetupDataDesc;
+
+(*  *)
 
 PROCEDURE Setup*(VAR setup : SetupData) : errors.Error;
 VAR

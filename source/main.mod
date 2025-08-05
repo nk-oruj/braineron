@@ -3,13 +3,13 @@ MODULE braineron;
 IMPORT
     Files,
     errors, options,
-    lachesis;
+    parser;
 
 VAR
     error : errors.Error;
     setup : options.SetupData;
 BEGIN
-    (* parse compiler options *)
+    (* options parsing *)
     error := options.Setup(setup);
     IF error # NIL
     THEN
@@ -17,14 +17,14 @@ BEGIN
         RETURN;
     END;
 
-    (* parse given source to target *)
-    error := lachesis.Parse(setup.sourceRider, setup.targetRider);
+    (* program parsing *)
+    error := parser.Parse(setup.sourceRider, setup.targetRider);
     IF error # NIL
     THEN
         errors.Raise(error, "error");
         RETURN;
     END;
 
-    (* process setup afterwards *)
+    (* closing options setup *)
     options.CloseSetup(setup);
 END braineron.
