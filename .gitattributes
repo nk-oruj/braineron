@@ -1,4 +1,5 @@
-* text=auto
+* 	text=auto
 
-*.mod text eol=lf
-.git* text eol=lf
+*.mod 	text eol=lf
+*.bf	test eol=lf
+.git* 	text eol=lf
